@@ -1,28 +1,5 @@
-/*
-// Create a Paper.js Path to draw a line into it:
 
-var path = new Path();
-// Give the stroke a color
-path.strokeColor = 'red';
-var start = new Point(300, 200);
-// Move to start and draw a line from there
-path.moveTo(start);
-// Note the plus operator on Point objects.
-// PaperScript does that for us, and much more!
-path.lineTo(start + [100, -50 ]);
-*/
-/*
-var myCircle = new Path.Circle(new Point(0, 0), 30);
-myCircle.fillColor = 'white';
-
-for(var x = 0; x < 2000; x += 100){
-  for(var y = 0; y < 1000; y += 100){
-    new Path.Circle(new Point(x, y), 20).fillColor = 'white';
-  }
-}*/
-
-
-// random circles
+//  sounds to keys
 var circles = [];
 
 var keyData = {
@@ -184,7 +161,44 @@ var keyData = {
 	}
 }
 
+/*//random key for click -added 
+var randomKeyFn = function(keyData) {
+    var keys = Object.keys(keyData)
+    return keyData[keys[ keys.length * Math.random() << 0]];
+}
+var randomK = randomKeyFn(keyData);
+console.log(randomK);*/
+/*$("body").on('click', onKeyDown(randomK) );*/
 
+$("body").on('click', function(e) {
+  var maxPoint = new Point(view.size.width, view.size.height);
+  var randomP = Point.random();
+  var point = maxPoint * randomP;
+  var newCircle = new Path.Circle(point, 500);
+  // newCircle cannot be white or black
+  newCircle.fillColor = "#BB9911";
+   if(keyData[e]){
+    // newCircle cannot be white or black
+    newCircle.fillColor = keyData[e].color;
+    keyData[e].sound.play();  
+    circles.push(newCircle);
+  }
+  else{
+    newCircle.fillColor.hue = Math.random() * 360;
+    circles.push(newCircle);
+  }
+});
+
+
+/*
+//for multiple event lsiteners
+
+['click','ontouchstart'].forEach( evt => 
+    element.addEventListener(evt, dosomething, false)
+);
+*/
+
+// proper code
 function onKeyDown(e) {
   
   var maxPoint = new Point(view.size.width, view.size.height);
@@ -206,14 +220,6 @@ function onKeyDown(e) {
   }  
 }
 
-/*function onFrame(event) {
-  
-  for(var i = 0; i < circles.length; i++){
-    circles[i].fillColor.hue += 1;
-    circles[i].scale(0.9);
-  } 
-}*/
-
 function onFrame(event){
   for(var i = 0; i < circles.length; i++){
     circles[i].scale(0.9);
@@ -225,3 +231,6 @@ function onFrame(event){
     }
   }
 }
+
+
+
