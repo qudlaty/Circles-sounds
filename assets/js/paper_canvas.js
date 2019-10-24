@@ -1,5 +1,5 @@
 
-//  sounds to keys
+//  sounds adn colors to keys
 var circles = [];
 
 var keyData = {
@@ -9,7 +9,7 @@ var keyData = {
 		}),
 		color: '#1abc9c'
 	},
-	w: {
+  w: {
 		sound: new Howl({
   		src: ['sounds/clay.mp3']
 		}),
@@ -161,44 +161,38 @@ var keyData = {
 	}
 }
 
-/*//random key for click -added 
+/*//random key for click-todo
 var randomKeyFn = function(keyData) {
-    var keys = Object.keys(keyData)
-    return keyData[keys[ keys.length * Math.random() << 0]];
+  var keys = Object.keys(keyData);
+  return keyData[keys[keys.length * Math.random() << 0]];
 }
-var randomK = randomKeyFn(keyData);
-console.log(randomK);*/
-/*$("body").on('click', onKeyDown(randomK) );*/
+console.log(randomKeyFn);*/
 
-$("body").on('click', function(e) {
-  var maxPoint = new Point(view.size.width, view.size.height);
-  var randomP = Point.random();
-  var point = maxPoint * randomP;
-  var newCircle = new Path.Circle(point, 500);
-  // newCircle cannot be white or black
-  newCircle.fillColor = "#BB9911";
-   if(keyData[e]){
-    // newCircle cannot be white or black
-    newCircle.fillColor = keyData[e].color;
-    keyData[e].sound.play();  
-    circles.push(newCircle);
-  }
-  else{
-    newCircle.fillColor.hue = Math.random() * 360;
-    circles.push(newCircle);
-  }
+
+// for click and tap with random colors and no sounds
+var onTapAndClick = ['click','ontouchstart'].forEach(function(evt) {
+    $('body').on(evt, function(e) {
+      var maxPoint = new Point(view.size.width, view.size.height);
+      var randomP = Point.random();
+      var point = maxPoint * randomP;
+      var newCircle = new Path.Circle(point, 500);
+      // newCircle cannot be white or black
+      newCircle.fillColor = "#BB9911";
+      if(keyData[e]){
+        newCircle.fillColor = keyData[e].color;
+        //randomK[e].sound.play();  
+        circles.push(newCircle);
+      }
+      else{
+        newCircle.fillColor.hue = Math.random() * 360;
+        circles.push(newCircle);
+      }
+
+    });
 });
 
 
-/*
-//for multiple event lsiteners
-
-['click','ontouchstart'].forEach( evt => 
-    element.addEventListener(evt, dosomething, false)
-);
-*/
-
-// proper code
+// proper code for keyboard keys
 function onKeyDown(e) {
   
   var maxPoint = new Point(view.size.width, view.size.height);
@@ -209,7 +203,6 @@ function onKeyDown(e) {
   newCircle.fillColor = "#BB9911";
   
   if(keyData[e.key]){
-    // newCircle cannot be white or black
     newCircle.fillColor = keyData[e.key].color;
     keyData[e.key].sound.play();  
     circles.push(newCircle);
